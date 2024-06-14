@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: ae61019a54b1e9f4f93d59dbb3f22fc5
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - entityView: {instanceID: 0}
+  - cinemachineVirtualCameraPrefab: {fileID: 7294176118931188585, guid: 3d58186fef296664aae6d7cea638d165,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

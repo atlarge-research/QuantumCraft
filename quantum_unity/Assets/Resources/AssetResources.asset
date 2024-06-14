@@ -1,0 +1,103 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dd8e95ae0daaec4496511105240e8a3, type: 3}
+  m_Name: AssetResources
+  m_EditorClassIdentifier: 
+  AssetBundlesGroup:
+    _resources: []
+  ResourcesGroup:
+    _resources:
+    - Path: Resources/DB/Configs/DefaultPhysicsMaterial
+      AssetRef:
+        Id:
+          Value: 1
+      ResourcePath: DB/Configs/DefaultPhysicsMaterial
+    - Path: Resources/DB/Configs/DefaultNavMeshAgentConfig
+      AssetRef:
+        Id:
+          Value: 2
+      ResourcePath: DB/Configs/DefaultNavMeshAgentConfig
+    - Path: Resources/DB/Configs/DefaultCharacterController2D
+      AssetRef:
+        Id:
+          Value: 3
+      ResourcePath: DB/Configs/DefaultCharacterController2D
+    - Path: Resources/DB/Configs/DefaultCharacterController3D
+      AssetRef:
+        Id:
+          Value: 4
+      ResourcePath: DB/Configs/DefaultCharacterController3D
+    - Path: Resources/DB/Configs/SimulationConfig
+      AssetRef:
+        Id:
+          Value: 5
+      ResourcePath: DB/Configs/SimulationConfig
+    - Path: Resources/DB/Grass Block|EntityPrototype
+      AssetRef:
+        Id:
+          Value: 214478512223691712
+      ResourcePath: DB/Grass Block
+    - Path: Resources/DB/MapAsset
+      AssetRef:
+        Id:
+          Value: 254103217219744104
+      ResourcePath: DB/MapAsset
+    - Path: Resources/DB/Map1_mesh
+      AssetRef:
+        Id:
+          Value: 810189026489540597
+      ResourcePath: DB/Map1_mesh
+    - Path: Resources/DB/SimulationConfigAsset
+      AssetRef:
+        Id:
+          Value: 1054455384863422146
+      ResourcePath: DB/SimulationConfigAsset
+    - Path: Resources/DB/CharacterControllerEntity|EntityPrototype
+      AssetRef:
+        Id:
+          Value: 1102488253573546737
+      ResourcePath: DB/CharacterControllerEntity
+    - Path: Resources/DB/Dirt Block|EntityView
+      AssetRef:
+        Id:
+          Value: 1537188097203843599
+      ResourcePath: DB/Dirt Block
+    - Path: Resources/DB/Map1
+      AssetRef:
+        Id:
+          Value: 1710471675203725834
+      ResourcePath: DB/Map1
+    - Path: Resources/DB/CharacterControllerEntity|EntityView
+      AssetRef:
+        Id:
+          Value: 1726985402896552197
+      ResourcePath: DB/CharacterControllerEntity
+    - Path: Resources/DB/Dirt Block|EntityPrototype
+      AssetRef:
+        Id:
+          Value: 2661265711193571609
+      ResourcePath: DB/Dirt Block
+    - Path: Resources/DB/Stone Block|EntityView
+      AssetRef:
+        Id:
+          Value: 2877227794483031430
+      ResourcePath: DB/Stone Block
+    - Path: Resources/DB/Grass Block|EntityView
+      AssetRef:
+        Id:
+          Value: 3553408882107929299
+      ResourcePath: DB/Grass Block
+    - Path: Resources/DB/Stone Block|EntityPrototype
+      AssetRef:
+        Id:
+          Value: 4480024150684243352
+      ResourcePath: DB/Stone Block

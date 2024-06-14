@@ -1,0 +1,15 @@
+input 
+{
+	short DirectionX;
+	short DirectionY;
+	FPVector2 PitchYaw;
+	button PrimaryAction;
+	button SecondaryAction;
+	button Jump;
+}
+
+component PitchYaw
+{
+	FP Pitch;
+	FP Yaw;
+}

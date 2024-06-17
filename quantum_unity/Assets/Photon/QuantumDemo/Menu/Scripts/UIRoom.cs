@@ -156,7 +156,7 @@ namespace Quantum.Demo {
       MapSelectDropdown.interactable        = isMasterClient;
       ClientCountDropdown.interactable      = isMasterClient;
       HideRoomOnStartToggle.interactable    = isMasterClient;
-
+            
       RoomName.text = UIMain.Client.CurrentRoom.Name;
       Region.text = UIMain.Client.CloudRegion.ToUpper();
 
@@ -345,6 +345,8 @@ namespace Quantum.Demo {
     }
 
     public void OnCreatedRoom() {
+            Debug.LogError("Created the room");
+            OnPlayerCountChanged(10);
     }
 
     public void OnCreateRoomFailed(short returnCode, string message) {

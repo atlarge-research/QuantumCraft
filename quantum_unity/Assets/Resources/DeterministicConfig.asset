@@ -15,7 +15,7 @@ MonoBehaviour:
   Config:
     PlayerCount: 0
     ChecksumCrossPlatformDeterminism: 0
-    LockstepSimulation: 0
+    LockstepSimulation: 1
     AggressiveSendMode: 0
     UpdateFPS: 60
     ChecksumInterval: 0

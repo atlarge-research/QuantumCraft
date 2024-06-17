@@ -96,6 +96,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include="GameLogic\GameSetup.qtn" />
     <None Include="Input\input.qtn" />
     <None Include="Input\playerLink.qtn" />
   </ItemGroup>

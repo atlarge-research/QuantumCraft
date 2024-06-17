@@ -127,13 +127,16 @@ namespace Quantum.Demo {
       Debug.Log($"Entered room '{UIMain.Client.CurrentRoom.Name}' as actor '{UIMain.Client.LocalPlayer.ActorNumber}'");
       HideScreen();
       UIRoom.ShowScreen();
+      //UIMain.Client.CurrentRoom.MaxPlayers = 100;
+      //UIRoom.Instance.OnPlayerCountChanged( 100 );
+      
       UIRoom.Instance.OnStartClicked();
     }
 
     public void OnJoinRoomFailed(short returnCode, string message) {
       UIDialog.Show("Error", $"Joining room failed [{returnCode}]: '{message}'", () => UIMain.Client?.Disconnect());
     }
-
+        
     public void OnJoinRandomFailed(short returnCode, string message) {
       if (returnCode == ErrorCode.NoRandomMatchFound) {
         if (!UIMain.Client.OpCreateRoom(_enterRoomParams)) {

@@ -84,8 +84,11 @@ namespace Quantum.Demo {
     public void Update() {
       _localBalancingClient?.Service();
 
-      if (_State == State.Starting)
-        return;
+        if (_State == State.Starting)
+        {
+            Debug.LogError("State is starting");
+            return;
+        }
 
       if (_localBalancingClient != null && _localBalancingClient.InRoom) {
 

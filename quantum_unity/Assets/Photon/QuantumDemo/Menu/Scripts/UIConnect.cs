@@ -26,7 +26,7 @@ namespace Quantum.Demo {
       get => PlayerPrefs.GetInt("Quantum.Demo.UIConnect.LastSelectedAppVersion");
       set => PlayerPrefs.SetInt("Quantum.Demo.UIConnect.LastSelectedAppVersion", value);
     }
-
+     
     protected new void Awake() {
       base.Awake();
 
@@ -42,7 +42,16 @@ namespace Quantum.Demo {
       // Create version options
       AppVersionDropdown.AddOptions(PhotonAppVersions.CreateDefaultDropdownOptions(appSettings, SelectableAppVersion));
       AppVersionDropdown.value = LastSelectedAppVersion;
+
     }
+
+    protected void Start()
+    {
+        uint randIndex = (uint)Math.Abs(UnityEngine.Random.Range(0, int.MaxValue));
+        Username.text = $"User-{randIndex}";
+        OnConnectClicked();
+    }
+
 
     public override void OnShowScreen(bool first) {
       base.OnShowScreen(first);

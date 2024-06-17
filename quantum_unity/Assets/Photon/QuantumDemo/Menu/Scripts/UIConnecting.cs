@@ -127,9 +127,6 @@ namespace Quantum.Demo {
       Debug.Log($"Entered room '{UIMain.Client.CurrentRoom.Name}' as actor '{UIMain.Client.LocalPlayer.ActorNumber}'");
       HideScreen();
       UIRoom.ShowScreen();
-      //UIMain.Client.CurrentRoom.MaxPlayers = 100;
-      //UIRoom.Instance.OnPlayerCountChanged( 100 );
-      
       UIRoom.Instance.OnStartClicked();
     }
 

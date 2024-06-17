@@ -45,8 +45,7 @@ namespace Quantum.Demo {
 
     }
 
-    protected void Start()
-    {
+    protected void Start()  {
         uint randIndex = (uint)Math.Abs(UnityEngine.Random.Range(0, int.MaxValue));
         Username.text = $"User-{randIndex}";
         OnConnectClicked();

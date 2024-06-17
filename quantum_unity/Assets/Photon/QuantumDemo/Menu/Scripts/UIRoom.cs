@@ -345,8 +345,6 @@ namespace Quantum.Demo {
     }
 
     public void OnCreatedRoom() {
-            Debug.LogError("Created the room");
-            OnPlayerCountChanged(10);
     }
 
     public void OnCreateRoomFailed(short returnCode, string message) {

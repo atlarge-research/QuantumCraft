@@ -33,10 +33,10 @@ public class PlayerHandler : MonoBehaviour
                 virtualCamera.transform.rotation = transform.rotation;
                 virtualCamera.transform.SetParent(transform);
 
-                traceEvent = new InputEventTrace();
-                traceEvent.ReadFrom(traceName);
-                traceEvent.Replay().PlayAllEventsAccordingToTimestamps();
-                Log.Error("Started playing back input events");
+                //traceEvent = new InputEventTrace();
+                //traceEvent.ReadFrom(traceName);
+                //traceEvent.Replay().PlayAllEventsAccordingToTimestamps();
+                //Log.Error("Started playing back input events");
 
 
 

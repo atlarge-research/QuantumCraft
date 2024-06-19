@@ -14,49 +14,45 @@ last_net_counters = {'bytes_sent': 0, 'bytes_recv': 0}
 # --- Functions ---
 def launch_game_instance(instance_number):
     """Launches a single instance of the game in headless mode and returns its process."""
-    process = subprocess.Popen(["./QuantumCraft.x86_64"], 
+    process = subprocess.Popen(["./QuantumCraft.x86_64"],
                                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     print(f"Launched headless instance {instance_number} with PID {process.pid}")
     return process
 
 
-def monitor_bandwidth(interval, duration):
+def monitor_bandwidth(interval, duration, interface="eth0"):  # Added interface argument
+    """Monitors bandwidth usage for the specified network interface."""
+
     global end_time, last_net_counters
 
     end_time = time.time() + duration
 
-    with open("/proc/net/dev") as f:
-        lines = f.readlines()
+    def get_net_counters(interface):
+        """Helper function to read network counters from /proc/net/dev."""
+        with open("/proc/net/dev") as f:
+            for line in f:
+                if interface in line:
+                    _, bytes_recv, bytes_sent, *_ = map(int, line.split()[1::2])
+                    return {'bytes_recv': bytes_recv, 'bytes_sent': bytes_sent}
+        raise ValueError(f"Interface '{interface}' not found in /proc/net/dev")
 
-    for line in lines:
-        if "eth0" in line:  # Or your relevant interface (e.g., 'wlan0' for Wi-Fi)
-            last_net_counters['bytes_recv'], last_net_counters['bytes_sent'], *_ = map(int, line.split()[1::2])
-            break
+    last_net_counters = get_net_counters(interface)
 
     while time.time() < end_time:
-        with open("/proc/net/dev") as f:
-            lines = f.readlines()
-        for line in lines:
-            if "eth0" in line:  # Or your relevant interface
-                bytes_recv, bytes_sent, *_ = map(int, line.split()[1::2])
-                break
-
-        net_sent = bytes_sent - last_net_counters['bytes_sent']
-        net_recv = bytes_recv - last_net_counters['bytes_recv']
-        last_net_counters['bytes_sent'] = bytes_sent
-        last_net_counters['bytes_recv'] = bytes_recv
-
+        current_net_counters = get_net_counters(interface)
+        net_sent = current_net_counters['bytes_sent'] - last_net_counters['bytes_sent']
+        net_recv = current_net_counters['bytes_recv'] - last_net_counters['bytes_recv']
+        last_net_counters = current_net_counters
         print("Net Sent: {}, Net Recv: {}".format(net_sent, net_recv))  # Replace with your desired logging
         data.append({
-            'Timestamp': time.time(), 
+            'Timestamp': time.time(),
             'Net Sent (Bytes)': net_sent,
             'Net Recv (Bytes)': net_recv
         })
-
         time.sleep(interval)
 
 
-def signal_handler(sig, frame):
+def signal_handler():
     """Handles Ctrl+C (SIGINT) signal to terminate game processes."""
     global end_time
     print("Ctrl+C pressed. Terminating game instances...")
@@ -71,6 +67,7 @@ if __name__ == "__main__":
     parser.add_argument("num_instances", type=int, help="Number of game instances to launch")
     parser.add_argument("interval", type=float, help="Data collection interval in seconds")
     parser.add_argument("duration", type=float, help="Total monitoring duration in seconds")
+    parser.add_argument("--interface", default="eth0", help="Network interface to monitor (e.g., eth0, wlan0)")  
     args = parser.parse_args()
 
     signal.signal(signal.SIGINT, signal_handler)
@@ -78,11 +75,10 @@ if __name__ == "__main__":
     for i in range(args.num_instances):
         process = launch_game_instance(i + 1)
         game_processes.append(process)
-        time.sleep(2)  # Give instances time to start up
+        time.sleep(2) 
 
-    monitor_bandwidth(args.interval, args.duration)
+    monitor_bandwidth(args.interval, args.duration, args.interface)  # Pass interface argument
 
-    # Terminate processes again in case some didn't exit cleanly
     for process in game_processes:
         process.kill()
 

@@ -1,52 +1,69 @@
-import psutil
 import time
-import pandas as pd
-import argparse
-import signal
+import csv
 import subprocess
+import signal
+import argparse
 
 # --- Global Variables ---
 data = []
 end_time = None
 game_processes = []
+last_net_counters = {'bytes_sent': 0, 'bytes_recv': 0}
+
 
 # --- Functions ---
 def launch_game_instance(instance_number):
     """Launches a single instance of the game in headless mode and returns its process."""
-    process = subprocess.Popen(["./QuantumCraft.x86_64"], #"-batchmode", "-nographics"],  
-                             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) 
+    process = subprocess.Popen(["./QuantumCraft.x86_64"], 
+                               stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     print(f"Launched headless instance {instance_number} with PID {process.pid}")
     return process
 
+
 def monitor_bandwidth(interval, duration):
-    """Monitors overall bandwidth usage (not per process)."""
-    global end_time
-    psutil.net_io_counters.cache_clear()
+    global end_time, last_net_counters
+
     end_time = time.time() + duration
-    last_net_counters = psutil.net_io_counters()
+
+    with open("/proc/net/dev") as f:
+        lines = f.readlines()
+
+    for line in lines:
+        if "eth0" in line:  # Or your relevant interface (e.g., 'wlan0' for Wi-Fi)
+            last_net_counters['bytes_recv'], last_net_counters['bytes_sent'], *_ = map(int, line.split()[1::2])
+            break
 
     while time.time() < end_time:
-        current_net_counters = psutil.net_io_counters()
-        net_sent = current_net_counters.bytes_sent - last_net_counters.bytes_sent
-        net_recv = current_net_counters.bytes_recv - last_net_counters.bytes_recv
-        print(current_net_counters)
-        last_net_counters = current_net_counters
+        with open("/proc/net/dev") as f:
+            lines = f.readlines()
+        for line in lines:
+            if "eth0" in line:  # Or your relevant interface
+                bytes_recv, bytes_sent, *_ = map(int, line.split()[1::2])
+                break
 
+        net_sent = bytes_sent - last_net_counters['bytes_sent']
+        net_recv = bytes_recv - last_net_counters['bytes_recv']
+        last_net_counters['bytes_sent'] = bytes_sent
+        last_net_counters['bytes_recv'] = bytes_recv
+
+        print("Net Sent: {}, Net Recv: {}".format(net_sent, net_recv))  # Replace with your desired logging
         data.append({
-            'Timestamp': pd.Timestamp.now(),
+            'Timestamp': time.time(), 
             'Net Sent (Bytes)': net_sent,
             'Net Recv (Bytes)': net_recv
         })
 
         time.sleep(interval)
 
+
 def signal_handler(sig, frame):
     """Handles Ctrl+C (SIGINT) signal to terminate game processes."""
-    global end_time 
+    global end_time
     print("Ctrl+C pressed. Terminating game instances...")
     for process in game_processes:
         process.terminate()
     end_time = time.time()  # Immediately stop the monitoring loop
+
 
 # --- Main Script ---
 if __name__ == "__main__":
@@ -61,7 +78,7 @@ if __name__ == "__main__":
     for i in range(args.num_instances):
         process = launch_game_instance(i + 1)
         game_processes.append(process)
-        time.sleep(2) 
+        time.sleep(2)  # Give instances time to start up
 
     monitor_bandwidth(args.interval, args.duration)
 
@@ -69,5 +86,9 @@ if __name__ == "__main__":
     for process in game_processes:
         process.kill()
 
-    df = pd.DataFrame(data)
-    df.to_csv("bandwidth_data.csv", index=False)
+    with open("bandwidth_data.csv", "w", newline="") as csvfile:
+        fieldnames = ['Timestamp', 'Net Sent (Bytes)', 'Net Recv (Bytes)']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        for row in data:
+            writer.writerow(row)

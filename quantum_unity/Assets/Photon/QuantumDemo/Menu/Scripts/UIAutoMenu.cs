@@ -214,6 +214,7 @@ namespace Quantum.Demo {
     }
 
     public void OnJoinRandomFailed(short returnCode, string message) {
+
       _State = State.Creating;
 
       RoomOptions roomOptions = new RoomOptions {

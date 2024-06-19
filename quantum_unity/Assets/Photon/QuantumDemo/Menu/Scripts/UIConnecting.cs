@@ -127,7 +127,7 @@ namespace Quantum.Demo {
       Debug.Log($"Entered room '{UIMain.Client.CurrentRoom.Name}' as actor '{UIMain.Client.LocalPlayer.ActorNumber}'");
       HideScreen();
       UIRoom.ShowScreen();
-      UIRoom.Instance.OnStartClicked();
+      //UIRoom.Instance.OnStartClicked();
     }
 
     public void OnJoinRoomFailed(short returnCode, string message) {

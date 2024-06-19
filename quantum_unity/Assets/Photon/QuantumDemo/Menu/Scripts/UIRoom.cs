@@ -179,7 +179,11 @@ namespace Quantum.Demo {
       // Update player count
       ClientCountText.text      = UIMain.Client.CurrentRoom.PlayerCount.ToString();
       ClientCountDropdown.value = UIMain.Client.CurrentRoom.MaxPlayers - 1;
-
+       
+        if(UIMain.Client.CurrentRoom.PlayerCount == UIMain.Client.CurrentRoom.MaxPlayers)
+        {
+            OnStartClicked();
+        }
       var toggle = ClientCountDropdown.GetComponent<UIDropdownToggle>();
       toggle.DisabledIndices = Enumerable.Range(0, UIMain.Client.CurrentRoom.PlayerCount - 1).ToList();
 

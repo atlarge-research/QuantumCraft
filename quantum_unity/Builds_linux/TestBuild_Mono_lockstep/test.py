@@ -14,7 +14,7 @@ last_net_counters = {'bytes_sent': 0, 'bytes_recv': 0}
 # --- Functions ---
 def launch_game_instance(instance_number):
     """Launches a single instance of the game in headless mode and returns its process."""
-    process = subprocess.Popen(["./QuantumCraft.x86_64"],
+    process = subprocess.Popen(["./QuantumCraft.x86_64", "-batchmode", "-nographics"],
                                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     print(f"Launched headless instance {instance_number} with PID {process.pid}")
     return process

@@ -9,9 +9,6 @@ using System.IO;
 public class PlayerHandler : MonoBehaviour
 {
     [SerializeField] EntityView entityView;
-    private string traceName = Path.Combine(Application.streamingAssetsPath, "InputTraces/MovingAround.inputtrace"); // Name of the trace asset'
-
-    private InputEventTrace traceEvent;
     public void OnEntityInstantiated()
     {
 

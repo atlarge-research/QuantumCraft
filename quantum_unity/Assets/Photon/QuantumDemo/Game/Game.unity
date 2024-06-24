@@ -3149,7 +3149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Damping: 0
---- !u!1 &2024551337
+--- !u!1 &1830322168
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3157,50 +3157,37 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2024551340}
-  - component: {fileID: 2024551338}
+  - component: {fileID: 1830322170}
+  - component: {fileID: 1830322169}
   m_Layer: 0
-  m_Name: InputRecorderObject
+  m_Name: Logger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2024551338
+--- !u!114 &1830322169
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2024551337}
-  m_Enabled: 0
+  m_GameObject: {fileID: 1830322168}
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d35d5308cbb1fcd479dbf0c516db2aa7, type: 3}
+  m_Script: {fileID: 11500000, guid: 0e63df0025ae4764eb9700352837dff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_StartRecordingWhenEnabled: 0
-  m_RecordFrames: 1
-  m_ReplayOnNewDevices: 0
-  m_SimulateOriginalTimingOnReplay: 1
-  m_RecordStateEventsOnly: 0
-  m_CaptureMemoryDefaultSize: 2097152
-  m_CaptureMemoryMaxSize: 10485760
-  m_DevicePath: 
-  m_RecordButtonPath: <Keyboard>/r
-  m_PlayButtonPath: <Keyboard>/#(P)
-  m_ChangeEvent:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!4 &2024551340
+--- !u!4 &1830322170
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2024551337}
+  m_GameObject: {fileID: 1830322168}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 491, y: 271, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3266,7 +3253,7 @@ SceneRoots:
   - {fileID: 394500854}
   - {fileID: 2068968506}
   - {fileID: 987400661}
-  - {fileID: 2024551340}
+  - {fileID: 1830322170}
   - {fileID: 1531703288}
   - {fileID: 206999465}
   - {fileID: 406828574}

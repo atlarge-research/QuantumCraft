@@ -37,11 +37,14 @@ namespace Quantum.Demo {
     public void OnConnectedToMaster() {
       if (string.IsNullOrEmpty(UIMain.Client.CloudRegion) == false) {
         Debug.Log($"Connected to master server in region '{UIMain.Client.CloudRegion}'");
+        CustomLogger.Instance.Log($"Connected to master server in region '{UIMain.Client.CloudRegion}'");
       }
       else {
         Debug.Log($"Connected to master server '{UIMain.Client.MasterServerAddress}'");
+        CustomLogger.Instance.Log($"Connected to master server '{UIMain.Client.MasterServerAddress}'");
       }
       Debug.Log($"UserId: {UIMain.Client.UserId}");
+      CustomLogger.Instance.Log($"UserId: {UIMain.Client.UserId}");
 
       var defaultMapGuid = 0L;
       if (RuntimeConfigContainer != null && RuntimeConfigContainer.Config.Map.Id.IsValid) {
@@ -78,16 +81,18 @@ namespace Quantum.Demo {
       _enterRoomParams.RoomOptions.EmptyRoomTtl = PhotonServerSettings.Instance.EmptyRoomTtlInSeconds * 1000;
 
       Debug.Log("Starting random matchmaking");
+      CustomLogger.Instance.Log("Starting random matchmaking");
 
       if (!UIMain.Client.OpJoinRandomOrCreateRoom(joinRandomParams, _enterRoomParams)) {
         UIMain.Client.Disconnect();
         Debug.LogError($"Failed to send join random operation");
+        CustomLogger.Instance.Log($"Failed to send join random operation");
       }
     }
 
     public void OnDisconnected(DisconnectCause cause) {
       Debug.Log($"Disconnected: {cause}");
-
+      CustomLogger.Instance.Log($"Disconnected: {cause}");
       if (cause != DisconnectCause.DisconnectByClientLogic) {
         UIDialog.Show("Connection Failed", cause.ToString(), () => {
           HideScreen();
@@ -125,6 +130,7 @@ namespace Quantum.Demo {
 
     public void OnJoinedRoom() {
       Debug.Log($"Entered room '{UIMain.Client.CurrentRoom.Name}' as actor '{UIMain.Client.LocalPlayer.ActorNumber}'");
+      CustomLogger.Instance.Log($"Entered room '{UIMain.Client.CurrentRoom.Name}' as actor '{UIMain.Client.LocalPlayer.ActorNumber}'");
       HideScreen();
       UIRoom.ShowScreen();
       //UIRoom.Instance.OnStartClicked();

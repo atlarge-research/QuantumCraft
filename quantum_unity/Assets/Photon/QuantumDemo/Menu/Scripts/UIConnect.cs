@@ -72,7 +72,7 @@ namespace Quantum.Demo {
 
       LastUsername = Username.text;
       Debug.Log($"Using user name '{Username.text}'");
-
+      CustomLogger.Instance.Log($"Using user name '{Username.text}'");
       UIMain.Client = new QuantumLoadBalancingClient(PhotonServerSettings.Instance.AppSettings.Protocol);
 
       // Overwrite region
@@ -97,12 +97,14 @@ namespace Quantum.Demo {
         }
 
         Debug.Log($"Using region '{LastSelectedRegion}'");
+        CustomLogger.Instance.Log($"Using region '{LastSelectedRegion}'");
       }
 
       // Append selected app version
       appSettings.AppVersion += PhotonAppVersions.AppendAppVersion((PhotonAppVersions.Type)AppVersionDropdown.value, SelectableAppVersion);
       LastSelectedAppVersion = AppVersionDropdown.value;
       Debug.Log($"Using app version '{appSettings.AppVersion}'");
+      CustomLogger.Instance.Log($"Using app version '{appSettings.AppVersion}'");
 
       if (UIMain.Client.ConnectUsingSettings(appSettings, Username.text)) {
         HideScreen();
@@ -110,6 +112,7 @@ namespace Quantum.Demo {
       }
       else {
         Debug.LogError($"Failed to connect with app settings: '{appSettings.ToStringFull()}'");
+        CustomLogger.Instance.Log($"Failed to connect with app settings: '{appSettings.ToStringFull()}'");
       }
     }
 
@@ -121,6 +124,7 @@ namespace Quantum.Demo {
           // https://doc.photonengine.com/en-us/realtime/current/troubleshooting/analyzing-disconnects#quick_rejoin__reconnectandrejoin_
           if (UIMain.Client.ReconnectAndRejoin()) {
             Debug.Log($"Reconnecting and rejoining");
+            CustomLogger.Instance.Log($"Reconnecting and rejoining");
             HideScreen();
             UIReconnecting.ShowScreen();
             return;
@@ -130,6 +134,7 @@ namespace Quantum.Demo {
           // Reconnect to master server and join back into the room
           if (UIMain.Client.ReconnectToMaster()) {
             Debug.Log($"Reconnecting to master server");
+            CustomLogger.Instance.Log($"Reconnecting to master server");
             HideScreen();
             UIReconnecting.ShowScreen();
             return;
@@ -148,13 +153,17 @@ namespace Quantum.Demo {
 
         if (UIMain.Client.ConnectUsingSettings(appSettings, LastUsername)) {
           Debug.Log($"Reconnecting to nameserver using reconnect info {ReconnectInformation.Instance}");
+          CustomLogger.Instance.Log($"Reconnecting to nameserver using reconnect info {ReconnectInformation.Instance}");
           HideScreen();
           UIReconnecting.ShowScreen();
           return;
         }
       }
 
+      
+
       Debug.LogError($"Cannot reconnect");
+      CustomLogger.Instance.Log($"Cannot reconnect");
       ReconnectInformation.Reset();
       ReconnectButton.interactable = false;
     }

@@ -36,11 +36,11 @@ namespace Quantum
                         {
                             createdBlockEntity = f.Create(grassBlockPrototype);
                         }
-                        else if (y >= -2) // Next 4 layers (dirt)
+                        else if (y >= -2) // Next layer (dirt)
                         {
                             createdBlockEntity = f.Create(dirtBlockPrototype);
                         }
-                        else // Bottom 4 layers (stone)
+                        else // Bottom layer (stone)
                         {
                             createdBlockEntity = f.Create(stoneBlockPrototype);
                         }

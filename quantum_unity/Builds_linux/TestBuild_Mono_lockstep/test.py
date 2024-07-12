@@ -1,59 +1,81 @@
 import psutil
-import subprocess
 import time
+import pandas as pd
 import argparse
-from concurrent.futures import ThreadPoolExecutor
-import csv
+import signal
+import subprocess
 
-def run_and_monitor(process):
-    network_stats = []
+# --- Global Variables ---
+data = []
+end_time = None
+game_processes = {}  
 
-    try:
-        while process.poll() is None:  # Check if process is still running
-            p = psutil.Process(process.pid)
-            io_counters = p.net_io_counters()
-            network_stats.append([time.time(), io_counters.bytes_sent, io_counters.bytes_recv])
-            time.sleep(1)
-    except psutil.NoSuchProcess:
-        pass
+# --- Functions ---
+def launch_game_instance(instance_number):
+    """Launches a single instance of the game in headless mode and returns its process."""
+    process = subprocess.Popen(["./QuantumCraft.x86_64"],  
+                               stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) 
+    print(f"Launched headless instance {instance_number} with PID {process.pid}")
+    return process
 
-    return process.pid, network_stats
+def monitor_bandwidth(interval, duration):
+    """Monitors bandwidth per process"""
+    global end_time, game_processes
+    psutil.net_io_counters.cache_clear()  
+    end_time = time.time() + duration
 
+    while time.time() < end_time:
+        for process in list(game_processes.keys()):  
+            try:
+                net_io = process.oneshot().children()[0].connections() 
+                if net_io:
+                    net_sent, net_recv = net_io[0].bytes_sent, net_io[0].bytes_recv
+                    game_processes[process].append((net_sent, net_recv))  
+            except (psutil.NoSuchProcess, psutil.AccessDenied, IndexError):
+                del game_processes[process] 
+
+        time.sleep(interval)
+
+def signal_handler(sig, frame):
+    """Handles Ctrl+C (SIGINT) signal to terminate game processes."""
+    global end_time 
+    print("Ctrl+C pressed. Terminating game instances...")
+    for process in game_processes:
+        process.terminate()
+    end_time = time.time()  
+
+
+# --- Main Script ---
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Run and monitor game instances.")
-    parser.add_argument("num_instances", type=int, help="Number of game instances to run")
-    parser.add_argument("duration", type=int, help="Duration to run the instances (in seconds)")
+    parser = argparse.ArgumentParser(description="Launch and monitor Unity game instances.")
+    parser.add_argument("num_instances", type=int, help="Number of game instances to launch")
+    parser.add_argument("interval", type=float, help="Data collection interval in seconds")
+    parser.add_argument("duration", type=float, help="Total monitoring duration in seconds")
     args = parser.parse_args()
 
-    processes = []
-    for _ in range(args.num_instances):
-        processes.append(subprocess.Popen(["./QuantumCraft.x86_64"]))
+    signal.signal(signal.SIGINT, signal_handler)
 
-    start_time = time.time()
-    with ThreadPoolExecutor() as executor:
-        results = executor.map(run_and_monitor, processes)
+    for i in range(args.num_instances):
+        process = launch_game_instance(i + 1)
+        game_processes[process] = []
 
-    end_time = time.time()
+    monitor_bandwidth(args.interval, args.duration)
 
-    # Terminate processes
-    for process in processes:
-        if process.poll() is None:
-            process.terminate()
-            process.wait()
+    # Data Processing
+    all_data = []
+    for process, stats in game_processes.items():
+        for net_sent, net_recv in stats:
+            all_data.append({
+                'Timestamp': pd.Timestamp.now(),
+                'PID': process.pid,
+                'Net Sent (Bytes)': net_sent,
+                'Net Recv (Bytes)': net_recv
+            })
 
-    # Write network stats to CSV
-    with open("bandwidth_data.csv", "w", newline="") as csvfile:
-        fieldnames = ["Timestamp", "Bytes_Sent", "Bytes_Received", "PID"]
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        writer.writeheader()
-        for pid, stats in results:
-            for row in stats:
-                writer.writerow({
-                    "Timestamp": row[0],
-                    "Bytes_Sent": row[1],
-                    "Bytes_Received": row[2],
-                    "PID": pid
-                })
+    # Terminate game processes 
+    for process in game_processes:
+        process.terminate()
+        process.wait()
 
-    print(f"Network statistics saved to bandwidth_data.csv")
-    print(f"\nTotal Runtime: {end_time - start_time:.2f} seconds")
+    df = pd.DataFrame(all_data)
+    df.to_csv("bandwidth_data_per_process.csv", index=False)

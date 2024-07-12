@@ -1,9 +1,9 @@
 import psutil
 import time
+import pandas as pd
 import argparse
 import signal
 import subprocess
-import csv
 
 # --- Global Variables ---
 data = []
@@ -13,8 +13,8 @@ game_processes = []
 # --- Functions ---
 def launch_game_instance(instance_number):
     """Launches a single instance of the game in headless mode and returns its process."""
-    process = subprocess.Popen(["./QuantumCraft.x86_64", "-batchmode", "-nographics"], 
-                               stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    process = subprocess.Popen(["./QuantumCraft.x86_64"], #"-batchmode", "-nographics"],  
+                             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) 
     print(f"Launched headless instance {instance_number} with PID {process.pid}")
     return process
 
@@ -29,11 +29,11 @@ def monitor_bandwidth(interval, duration):
         current_net_counters = psutil.net_io_counters()
         net_sent = current_net_counters.bytes_sent - last_net_counters.bytes_sent
         net_recv = current_net_counters.bytes_recv - last_net_counters.bytes_recv
-        print(current_net_counters)  # This might not be needed on DAS-6
+        print(current_net_counters)
         last_net_counters = current_net_counters
 
         data.append({
-            'Timestamp': time.strftime('%Y-%m-%d %H:%M:%S'), # Simple timestamp
+            'Timestamp': pd.Timestamp.now(),
             'Net Sent (Bytes)': net_sent,
             'Net Recv (Bytes)': net_recv
         })
@@ -67,16 +67,7 @@ if __name__ == "__main__":
 
     # Terminate processes again in case some didn't exit cleanly
     for process in game_processes:
-        process.terminate()
-        process.wait()  # Wait for the process to terminate
+        process.kill()
 
-    # Write data to CSV
-    with open("bandwidth_data.csv", "w", newline="") as csvfile:
-        fieldnames = ['Timestamp', 'Net Sent (Bytes)', 'Net Recv (Bytes)']
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        writer.writeheader()
-        for row in data:
-            writer.writerow(row)
-
-    print("Data saved to bandwidth_data.csv")
-
+    df = pd.DataFrame(data)
+    df.to_csv("bandwidth_data.csv", index=False)

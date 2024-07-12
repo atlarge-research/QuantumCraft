@@ -59,15 +59,16 @@ if __name__ == "__main__":
     signal.signal(signal.SIGINT, signal_handler)
 
     for i in range(args.num_instances):
-        process = launch_game_instance(i + 1)
-        game_processes.append(process)
+        #process = launch_game_instance(i + 1)
+        #game_processes.append(process)
         time.sleep(2) 
 
     monitor_bandwidth(args.interval, args.duration)
 
     # Terminate processes again in case some didn't exit cleanly
-    for process in game_processes:
-        process.kill()
+    #for process in game_processes:
+    #    process.terminate()
+    #    process.wait()
 
     df = pd.DataFrame(data)
     df.to_csv("bandwidth_data.csv", index=False)

@@ -27,11 +27,15 @@ def monitor_bandwidth(interval, duration):
     while time.time() < end_time:
         for process in list(game_processes.keys()):  
             try:
-                net_io = process.oneshot().children()[0].connections() 
-                if net_io:
-                    net_sent, net_recv = net_io[0].bytes_sent, net_io[0].bytes_recv
-                    game_processes[process].append((net_sent, net_recv))  
+                if process.is_running():
+                    net_io = process.children()[0].connections() 
+                    if net_io:
+                        net_sent, net_recv = net_io[0].bytes_sent, net_io[0].bytes_recv
+                        game_processes[process].append((net_sent, net_recv))
+                else:
+                    del game_processes[process]
             except (psutil.NoSuchProcess, psutil.AccessDenied, IndexError):
+                # Process might have terminated or not have children
                 del game_processes[process] 
 
         time.sleep(interval)

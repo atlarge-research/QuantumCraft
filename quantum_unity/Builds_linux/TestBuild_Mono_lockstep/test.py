@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
     processes = []
     for _ in range(args.num_instances):
-        processes.append(subprocess.Popen(["./Quantum_Craft.x86_64"]))
+        processes.append(subprocess.Popen(["./QuantumCraft.x86_64"]))
 
     start_time = time.time()
     with ThreadPoolExecutor() as executor:

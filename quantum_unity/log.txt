@@ -1,7 +1,0 @@
-Using user name 'User-915144687'
-Using region 'eu'
-Using app version '1.0 66a2668b-0d2f-4c80-9ca2-55ac90c0d8cd'
-Connected to master server in region 'eu'
-UserId: 9a472111-0fe5-44ca-9deb-be4a8f465dc7
-Starting random matchmaking
-Entered room '0134056a-d318-4398-b33d-65972698e8d6' as actor '1'

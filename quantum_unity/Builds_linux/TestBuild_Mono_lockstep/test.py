@@ -1,42 +1,42 @@
 import psutil
 import time
-import pandas as pd
 import argparse
 import signal
 import subprocess
+import csv
 
 # --- Global Variables ---
 data = []
 end_time = None
-game_processes = {}  
+game_processes = []
 
 # --- Functions ---
 def launch_game_instance(instance_number):
     """Launches a single instance of the game in headless mode and returns its process."""
-    process = subprocess.Popen(["./QuantumCraft.x86_64"],  
-                               stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) 
+    process = subprocess.Popen(["./QuantumCraft.x86_64", "-batchmode", "-nographics"], 
+                               stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     print(f"Launched headless instance {instance_number} with PID {process.pid}")
     return process
 
 def monitor_bandwidth(interval, duration):
-    """Monitors bandwidth per process"""
-    global end_time, game_processes
-    psutil.net_io_counters.cache_clear()  
+    """Monitors overall bandwidth usage (not per process)."""
+    global end_time
+    psutil.net_io_counters.cache_clear()
     end_time = time.time() + duration
+    last_net_counters = psutil.net_io_counters()
 
     while time.time() < end_time:
-        for process in list(game_processes.keys()):  
-            try:
-                if process.is_running():
-                    net_io = process.children()[0].connections() 
-                    if net_io:
-                        net_sent, net_recv = net_io[0].bytes_sent, net_io[0].bytes_recv
-                        game_processes[process].append((net_sent, net_recv))
-                else:
-                    del game_processes[process]
-            except (psutil.NoSuchProcess, psutil.AccessDenied, IndexError):
-                # Process might have terminated or not have children
-                del game_processes[process] 
+        current_net_counters = psutil.net_io_counters()
+        net_sent = current_net_counters.bytes_sent - last_net_counters.bytes_sent
+        net_recv = current_net_counters.bytes_recv - last_net_counters.bytes_recv
+        print(current_net_counters)  # This might not be needed on DAS-6
+        last_net_counters = current_net_counters
+
+        data.append({
+            'Timestamp': time.strftime('%Y-%m-%d %H:%M:%S'), # Simple timestamp
+            'Net Sent (Bytes)': net_sent,
+            'Net Recv (Bytes)': net_recv
+        })
 
         time.sleep(interval)
 
@@ -46,8 +46,7 @@ def signal_handler(sig, frame):
     print("Ctrl+C pressed. Terminating game instances...")
     for process in game_processes:
         process.terminate()
-    end_time = time.time()  
-
+    end_time = time.time()  # Immediately stop the monitoring loop
 
 # --- Main Script ---
 if __name__ == "__main__":
@@ -61,25 +60,22 @@ if __name__ == "__main__":
 
     for i in range(args.num_instances):
         process = launch_game_instance(i + 1)
-        game_processes[process] = []
+        game_processes.append(process)
+        time.sleep(2) 
 
     monitor_bandwidth(args.interval, args.duration)
 
-    # Data Processing
-    all_data = []
-    for process, stats in game_processes.items():
-        for net_sent, net_recv in stats:
-            all_data.append({
-                'Timestamp': pd.Timestamp.now(),
-                'PID': process.pid,
-                'Net Sent (Bytes)': net_sent,
-                'Net Recv (Bytes)': net_recv
-            })
-
-    # Terminate game processes 
+    # Terminate processes again in case some didn't exit cleanly
     for process in game_processes:
         process.terminate()
-        process.wait()
+        process.wait()  # Wait for the process to terminate
 
-    df = pd.DataFrame(all_data)
-    df.to_csv("bandwidth_data_per_process.csv", index=False)
+    # Write data to CSV
+    with open("bandwidth_data.csv", "w", newline="") as csvfile:
+        fieldnames = ['Timestamp', 'Net Sent (Bytes)', 'Net Recv (Bytes)']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        for row in data:
+            writer.writerow(row)
+
+    print("Data saved to bandwidth_data.csv")

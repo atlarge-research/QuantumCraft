@@ -1,6 +1,0 @@
-Timestamp,FrameVerified,FramePredicted,PredictedFrames,Ping,UpdateTime(ms),InputOffset,ResimulatedFrames,SimulationState,NetworkIn(bytes/s),NetworkOut(bytes/s)
-6/19/2024 3:34:26 PM,167,167,0,28,3.2,0,0,Running,
-6/19/2024 3:34:27 PM,227,227,0,27,3.16,0,0,Running,4932,8067
-Timestamp,FrameVerified,FramePredicted,PredictedFrames,Ping,UpdateTime(ms),InputOffset,ResimulatedFrames,SimulationState,NetworkIn(bytes/s),NetworkOut(bytes/s)
-6/19/2024 3:46:11 PM,165,165,0,35,14.02,0,0,Running,
-6/19/2024 3:46:12 PM,225,225,0,27,3.62,0,0,Running,4829,7978

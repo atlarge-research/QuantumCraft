@@ -62,9 +62,9 @@ public class LocalInput : MonoBehaviour
     }
 }*/
 
-using System.Collections;
 using Photon.Deterministic;
 using Quantum;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 

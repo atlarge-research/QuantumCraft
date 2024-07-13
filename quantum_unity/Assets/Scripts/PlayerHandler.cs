@@ -1,10 +1,6 @@
-using UnityEngine;
 using Cinemachine;
 using Quantum;
-using UnityEngine.InputSystem;
-using UnityEngine.Playables;
-using UnityEngine.InputSystem.LowLevel;
-using System.IO;
+using UnityEngine;
 
 public class PlayerHandler : MonoBehaviour
 {

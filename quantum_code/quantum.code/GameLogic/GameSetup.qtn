@@ -1,2 +1,2 @@
-#define PLAYER_COUNT 12
+#define PLAYER_COUNT 16
 #pragma max_players PLAYER_COUNT

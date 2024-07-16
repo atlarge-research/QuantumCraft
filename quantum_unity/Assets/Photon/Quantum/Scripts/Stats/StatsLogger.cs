@@ -17,7 +17,7 @@ public class QuantumLogger : MonoBehaviour
 
     void Start()
     {
-        logFilePath = $"output_8players/stats_log_{nProcessID}.csv"; // Unique file per process
+        logFilePath = $"output_12players/stats_log_{nProcessID}.csv"; // Unique file per process
 
         // create event system if none exists in the scene
         var eventSystems = FindObjectsOfType<EventSystem>();

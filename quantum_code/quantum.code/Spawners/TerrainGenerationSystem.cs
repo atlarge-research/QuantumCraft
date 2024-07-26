@@ -57,9 +57,5 @@ namespace Quantum
 
 
         }
-        public override void Update(Frame f, ref Filter filter)
-        {
-            return;
-        }
     }
 }

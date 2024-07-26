@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.IO;
+using System.Linq.Expressions;
 using UnityEngine;
 
 public class CustomLogger : MonoBehaviour
@@ -27,33 +28,47 @@ public class CustomLogger : MonoBehaviour
 
     private void Awake()
     {
-        // Ensure only one instance exists
-        if (instance != null && instance != this)
+        try
         {
-            Destroy(gameObject);
-            return;
+            // Ensure only one instance exists
+            if (instance != null && instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            // Make this instance the singleton and persist across scenes
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+
+            // Get the current process ID and format the file name
+            int processId = Process.GetCurrentProcess().Id;
+            logFilePath = $"latency_output/test/log_{processId}.txt";
+
+            // Create the StreamWriter to write to the log file
+            writer = new StreamWriter(logFilePath, true); // Append to the file if it exists
         }
-
-        // Make this instance the singleton and persist across scenes
-        instance = this;
-        DontDestroyOnLoad(gameObject);
-
-        // Get the current process ID and format the file name
-        int processId = Process.GetCurrentProcess().Id;
-        logFilePath = $"latency_output/region_turkey/log_{processId}.txt";
-
-        // Create the StreamWriter to write to the log file
-        writer = new StreamWriter(logFilePath, true); // Append to the file if it exists
+        catch (System.Exception e)
+        {
+            //ignore
+        }
     }
 
     public void Log(string message)
     {
-        writer.WriteLine(message);
+        try
+        {
+            writer.WriteLine(message);
+        }
+        catch (System.Exception e)
+        {
+            //ignore
+        }
     }
 
     private void OnDisable()
     {
         // Close the StreamWriter when the script is disabled
-        writer.Close();
+        try { writer.Close(); } catch (System.Exception e) { }
     }
 }

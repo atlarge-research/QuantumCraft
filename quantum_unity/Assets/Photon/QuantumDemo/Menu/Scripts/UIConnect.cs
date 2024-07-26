@@ -14,6 +14,8 @@ namespace Quantum.Demo
         public UI.InputField Username;
         public UI.Button ReconnectButton;
 
+        private int SimLatency = 0;
+
         private static string LastSelectedRegion
         {
             get => PlayerPrefs.GetString("Quantum.Demo.UIConnect.LastSelectedRegion", PhotonServerSettings.Instance.AppSettings.FixedRegion);
@@ -84,7 +86,20 @@ namespace Quantum.Demo
             LastUsername = Username.text;
             Debug.Log($"Using user name '{Username.text}'");
             CustomLogger.Instance.Log($"Using user name '{Username.text}'");
+
+            SimLatency = 100;
+            
             UIMain.Client = new QuantumLoadBalancingClient(PhotonServerSettings.Instance.AppSettings.Protocol);
+            UIMain.Client.LoadBalancingPeer.NetworkSimulationSettings.IncomingLag = SimLatency;
+            Debug.Log($"Incoming lag set to {SimLatency}ms");
+            CustomLogger.Instance.Log($"Incoming lag set to {SimLatency}ms");
+            UIMain.Client.LoadBalancingPeer.NetworkSimulationSettings.OutgoingLag = SimLatency;
+            Debug.Log($"Incoming lag set to {SimLatency}ms");
+            CustomLogger.Instance.Log($"Incoming lag set to {SimLatency}ms");
+            UIMain.Client.LoadBalancingPeer.IsSimulationEnabled = true;
+            Debug.Log($"Network simulation enabled");
+            CustomLogger.Instance.Log($"Network simulation enabled");
+
 
             // Overwrite region
             if (string.IsNullOrEmpty(appSettings.Server) == false)

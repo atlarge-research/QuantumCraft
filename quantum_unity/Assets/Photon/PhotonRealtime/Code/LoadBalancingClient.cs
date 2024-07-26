@@ -1382,6 +1382,7 @@ namespace Photon.Realtime
 
             if (simulateTimeout)
             {
+                
                 this.LoadBalancingPeer.NetworkSimulationSettings.IncomingLossPercentage = 100;
                 this.LoadBalancingPeer.NetworkSimulationSettings.OutgoingLossPercentage = 100;
             }

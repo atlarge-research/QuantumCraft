@@ -17,7 +17,7 @@ public class QuantumLogger : MonoBehaviour
 
     void Start()
     {
-        logFilePath = $"latency_output/region_turkey/stats_log_{nProcessID}.csv"; // Unique file per process
+        logFilePath = $"latency_output/test/stats_log_{nProcessID}.csv"; // Unique file per process
 
         // create event system if none exists in the scene
         var eventSystems = FindObjectsOfType<EventSystem>();
@@ -40,6 +40,7 @@ public class QuantumLogger : MonoBehaviour
 
     void Update()
     {
+#if !UNITY_EDITOR
         timer += Time.deltaTime;
 
         if (timer >= 1f && QuantumRunner.Default)
@@ -87,6 +88,7 @@ public class QuantumLogger : MonoBehaviour
                 UnityEngine.Debug.LogError($"Error writing to log file: {e.Message}");
             }
         }
+#endif
     }
 
     void OnApplicationQuit() // Or OnDestroy if appropriate

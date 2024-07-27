@@ -17,7 +17,7 @@ MonoBehaviour:
     ChecksumCrossPlatformDeterminism: 0
     LockstepSimulation: 1
     AggressiveSendMode: 0
-    UpdateFPS: 60
+    UpdateFPS: 20
     ChecksumInterval: 0
     RollbackWindow: 60
     InputHardTolerance: 2

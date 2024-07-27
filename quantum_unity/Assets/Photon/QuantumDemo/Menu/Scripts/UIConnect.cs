@@ -87,7 +87,7 @@ namespace Quantum.Demo
             Debug.Log($"Using user name '{Username.text}'");
             CustomLogger.Instance.Log($"Using user name '{Username.text}'");
 
-            SimLatency = 125;
+            SimLatency = 150;
             
             UIMain.Client = new QuantumLoadBalancingClient(PhotonServerSettings.Instance.AppSettings.Protocol);
             UIMain.Client.LoadBalancingPeer.NetworkSimulationSettings.IncomingLag = SimLatency;

@@ -43,7 +43,7 @@ public class CustomLogger : MonoBehaviour
 
             // Get the current process ID and format the file name
             int processId = Process.GetCurrentProcess().Id;
-            logFilePath = $"latency_output/output_250ms/log_{processId}.txt";
+            logFilePath = $"latency_output/output_300ms/log_{processId}.txt";
 
             // Create the StreamWriter to write to the log file
             writer = new StreamWriter(logFilePath, true); // Append to the file if it exists

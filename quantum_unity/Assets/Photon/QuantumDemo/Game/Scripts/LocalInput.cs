@@ -15,6 +15,9 @@ public class LocalInput : MonoBehaviour
 
     private Vector2 hardcodedMoveInput = Vector2.zero;
     private Vector2 hardcodedLookInput = Vector2.zero;
+    private bool leftMouseClicked = false;
+    private bool rightMouseClicked = false;
+
 
     private Coroutine currentPattern;
     private float patternDuration = 480f; // 8 minutes in seconds
@@ -54,8 +57,11 @@ public class LocalInput : MonoBehaviour
         Quantum.Input i = new Quantum.Input();
 
         i.Jump = jumpAction.triggered;
-        i.PrimaryAction = primaryAction.triggered;
-        i.SecondaryAction = secondaryAction.triggered;
+        // i.PrimaryAction = primaryAction.triggered;
+        // i.SecondaryAction = secondaryAction.triggered;
+
+        i.PrimaryAction = leftMouseClicked;
+        i.SecondaryAction = rightMouseClicked;
 
         Vector2 moveInput = hardcodedMoveInput; // Use hardcoded input
         Vector2 lookInput = hardcodedLookInput;
@@ -85,28 +91,38 @@ public class LocalInput : MonoBehaviour
 
         while (Time.time - startTime < patternDuration)
         {
-            // 1. Move forward for 0.5 seconds
+            // 1. Move forward and look right for 0.5 seconds
             hardcodedMoveInput = Vector2.up;
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.2f);
 
-            // 2. Move right for 0.5 seconds
+            // 2. Click the left mouse button
+            leftMouseClicked = true; // Simulate left click
+
+            // 3. Move right and look down for 0.5 seconds
             hardcodedMoveInput = Vector2.right;
-            yield return new WaitForSeconds(0.5f);
+            hardcodedLookInput = Vector2.down + Vector2.down;   // Look down while moving right
+            yield return new WaitForSeconds(0.2f);
 
-            // 3. Move backwards for 0.5 seconds
+            // 4. Click the right mouse button
+            rightMouseClicked = true; // Simulate right click
+
+            // 5. Move backwards and look left for 0.5 seconds
             hardcodedMoveInput = Vector2.down;
-            yield return new WaitForSeconds(0.5f);
+            hardcodedLookInput = Vector2.left;    // Look left while moving down
+            yield return new WaitForSeconds(0.2f);
 
-            // 4. Move left for 0.5 seconds
+            // 6. Move left and look up for 0.5 seconds
             hardcodedMoveInput = Vector2.left;
-            yield return new WaitForSeconds(0.5f);
+            hardcodedLookInput = Vector2.up;     // Look up while moving left
+            yield return new WaitForSeconds(0.2f);
         }
 
-        // 5. Reset input to neutral after the pattern is complete
+        // Reset all inputs to neutral
         hardcodedMoveInput = Vector2.zero;
+        hardcodedLookInput = Vector2.zero;
+        leftMouseClicked = false;
+        rightMouseClicked = false;
 
-        currentPattern = null; // Mark pattern as finished
-
+        currentPattern = null;
     }
 }
-

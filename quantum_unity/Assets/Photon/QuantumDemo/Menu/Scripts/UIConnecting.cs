@@ -158,6 +158,9 @@ namespace Quantum.Demo
             CustomLogger.Instance.Log($"Entered room '{UIMain.Client.CurrentRoom.Name}' as actor '{UIMain.Client.LocalPlayer.ActorNumber}'");
             HideScreen();
             UIRoom.ShowScreen();
+            UIMain.Client.LoadBalancingPeer.IsSimulationEnabled = true;
+            Debug.Log($"Network simulation enabled");
+            CustomLogger.Instance.Log($"Network simulation enabled");
             //UIRoom.Instance.OnStartClicked();
         }
 

@@ -106,6 +106,7 @@ public class LocalInput : MonoBehaviour
         hardcodedMoveInput = Vector2.zero;
 
         currentPattern = null; // Mark pattern as finished
+
     }
 }
 

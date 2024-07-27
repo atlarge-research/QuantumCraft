@@ -63,7 +63,7 @@ public class LocalInput : MonoBehaviour
         i.PrimaryAction = leftMouseClicked;
         i.SecondaryAction = rightMouseClicked;
 
-        Vector2 moveInput = hardcodedMoveInput; // Use hardcoded input
+        Vector2 moveInput = hardcodedMoveInput; 
         Vector2 lookInput = hardcodedLookInput;
 
         i.DirectionX = (short)(moveInput.x * 10);
@@ -100,7 +100,7 @@ public class LocalInput : MonoBehaviour
 
             // 3. Move right and look down for 0.5 seconds
             hardcodedMoveInput = Vector2.right;
-            hardcodedLookInput = Vector2.down + Vector2.down;   // Look down while moving right
+            hardcodedLookInput = Vector2.down + Vector2.down;   
             yield return new WaitForSeconds(0.2f);
 
             // 4. Click the right mouse button
@@ -108,12 +108,12 @@ public class LocalInput : MonoBehaviour
 
             // 5. Move backwards and look left for 0.5 seconds
             hardcodedMoveInput = Vector2.down;
-            hardcodedLookInput = Vector2.left;    // Look left while moving down
+            hardcodedLookInput = Vector2.left;    
             yield return new WaitForSeconds(0.2f);
 
             // 6. Move left and look up for 0.5 seconds
             hardcodedMoveInput = Vector2.left;
-            hardcodedLookInput = Vector2.up;     // Look up while moving left
+            hardcodedLookInput = Vector2.up;    
             yield return new WaitForSeconds(0.2f);
         }
 

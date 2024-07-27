@@ -90,9 +90,11 @@ namespace Quantum.Demo
             SimLatency = 50;
             
             UIMain.Client = new QuantumLoadBalancingClient(PhotonServerSettings.Instance.AppSettings.Protocol);
+
             UIMain.Client.LoadBalancingPeer.NetworkSimulationSettings.IncomingLag = SimLatency;
             Debug.Log($"Incoming lag set to {SimLatency}ms");
             CustomLogger.Instance.Log($"Incoming lag set to {SimLatency}ms");
+
             UIMain.Client.LoadBalancingPeer.NetworkSimulationSettings.OutgoingLag = SimLatency;
             Debug.Log($"Incoming lag set to {SimLatency}ms");
             CustomLogger.Instance.Log($"Incoming lag set to {SimLatency}ms");

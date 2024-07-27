@@ -21,9 +21,9 @@ namespace Quantum
             var dirtBlockPrototype = f.FindAsset<EntityPrototype>("Resources/DB/Dirt Block|EntityPrototype");
             var grassBlockPrototype = f.FindAsset<EntityPrototype>("Resources/DB/Grass Block|EntityPrototype");
 
-            var height = 3;
-            var width = 48;
-            var length = 48;
+            var height = 2;
+            var width = 32;
+            var length = 32;
 
             for (int y = -height; y < 0; y++)
             {
@@ -40,7 +40,7 @@ namespace Quantum
                         {
                             createdBlockEntity = f.Create(dirtBlockPrototype);
                         }
-                        else // Bottom layer (stone)
+                        else // Bottom layer (stone) - Not used for now
                         {
                             createdBlockEntity = f.Create(stoneBlockPrototype);
                         }

@@ -28,5 +28,5 @@ MonoBehaviour:
     AuthMode: 1
     EnableLobbyStatistics: 1
     NetworkLogging: 5
-  PlayerTtlInSeconds: 300
-  EmptyRoomTtlInSeconds: 300
+  PlayerTtlInSeconds: 10
+  EmptyRoomTtlInSeconds: 10

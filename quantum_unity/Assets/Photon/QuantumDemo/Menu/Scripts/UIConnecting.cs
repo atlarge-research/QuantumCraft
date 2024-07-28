@@ -84,14 +84,14 @@ namespace Quantum.Demo
             _enterRoomParams = new EnterRoomParams();
             _enterRoomParams.RoomOptions = new RoomOptions();
             _enterRoomParams.RoomOptions.IsVisible = true;
-            _enterRoomParams.RoomOptions.MaxPlayers = Input.MAX_COUNT;
+            _enterRoomParams.RoomOptions.MaxPlayers = 0;//Input.MAX_COUNT;
             _enterRoomParams.RoomOptions.Plugins = new string[] { "QuantumPlugin" };
             _enterRoomParams.RoomOptions.CustomRoomProperties = new Hashtable {
         { "HIDE-ROOM", false },
         { "MAP-GUID", defaultMapGuid },
       };
             _enterRoomParams.RoomOptions.PlayerTtl = PhotonServerSettings.Instance.PlayerTtlInSeconds * 1000;
-            _enterRoomParams.RoomOptions.EmptyRoomTtl = PhotonServerSettings.Instance.EmptyRoomTtlInSeconds * 1000;
+            _enterRoomParams.RoomOptions.EmptyRoomTtl = 1;//PhotonServerSettings.Instance.EmptyRoomTtlInSeconds * 1000;
 
             Debug.Log("Starting random matchmaking");
             CustomLogger.Instance.Log("Starting random matchmaking");

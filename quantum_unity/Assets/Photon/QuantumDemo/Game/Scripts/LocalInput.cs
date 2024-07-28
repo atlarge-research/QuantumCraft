@@ -91,30 +91,30 @@ public class LocalInput : MonoBehaviour
 
         while (Time.time - startTime < patternDuration)
         {
-            // 1. Move forward and look right for 0.5 seconds
+            // 1. Move forward and look right for 0.1 seconds
             hardcodedMoveInput = Vector2.up;
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
 
             // 2. Click the left mouse button
             leftMouseClicked = true; // Simulate left click
 
-            // 3. Move right and look down for 0.5 seconds
+            // 3. Move right and look down for 0.1 seconds
             hardcodedMoveInput = Vector2.right;
             hardcodedLookInput = Vector2.down + Vector2.down;   
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
 
             // 4. Click the right mouse button
             rightMouseClicked = true; // Simulate right click
 
-            // 5. Move backwards and look left for 0.5 seconds
+            // 5. Move backwards and look left for 0.1 seconds
             hardcodedMoveInput = Vector2.down;
             hardcodedLookInput = Vector2.left;    
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
 
-            // 6. Move left and look up for 0.5 seconds
+            // 6. Move left and look up for 0.1 seconds
             hardcodedMoveInput = Vector2.left;
             hardcodedLookInput = Vector2.up;    
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
         }
 
         // Reset all inputs to neutral

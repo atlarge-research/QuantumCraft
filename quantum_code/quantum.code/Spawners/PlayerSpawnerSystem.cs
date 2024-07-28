@@ -55,7 +55,7 @@ namespace Quantum
         {
             // Some kind of spawning system for the player.
             // Can be anything as long as it isn't random between clients
-            return new FPVector3(playerNumber+20, 0, 32);
+            return new FPVector3(16, 2, 16);
         }
     }
 }

@@ -15,12 +15,12 @@ MonoBehaviour:
   Config:
     PlayerCount: 0
     ChecksumCrossPlatformDeterminism: 0
-    LockstepSimulation: 1
+    LockstepSimulation: 0
     AggressiveSendMode: 0
     UpdateFPS: 60
     ChecksumInterval: 0
     RollbackWindow: 60
-    InputHardTolerance: 8
+    InputHardTolerance: 20
     InputRedundancy: 3
     InputRepeatMaxDistance: 5
     SessionStartTimeout: 1

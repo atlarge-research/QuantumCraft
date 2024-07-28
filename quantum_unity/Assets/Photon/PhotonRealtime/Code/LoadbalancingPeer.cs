@@ -296,7 +296,6 @@ namespace Photon.Realtime
             {
                 this.Listener.DebugReturn(DebugLevel.INFO, "OpCreateRoom()");
             }
-            opParams.RoomOptions.EmptyRoomTtl = 1;
             Dictionary<byte, object> op = new Dictionary<byte, object>();
 
             if (!string.IsNullOrEmpty(opParams.RoomName))

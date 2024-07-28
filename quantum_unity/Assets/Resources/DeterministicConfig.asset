@@ -32,6 +32,6 @@ MonoBehaviour:
     TimeScalePingMax: 300
     InputDelayMin: 0
     InputDelayMax: 1
-    InputDelayPingStart: 100
+    InputDelayPingStart: 400
     InputFixedSizeEnabled: 1
     InputFixedSize: 0
